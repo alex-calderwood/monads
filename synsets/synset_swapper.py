@@ -30,7 +30,7 @@ def get_a_sense(word):
     adjacent_synset = choice(adjacent_synset_list)
     adjacent_senses = adjacent_synset.senses()
     new_sense = choice(adjacent_senses)
-    adjacent_word = new_sense.normalized_lemma
+    adjacent_word = new_sense.normalized_lemma.replace("_", " ")
   except Exception as e:
     print(f"{word}:{e}")
     return word
@@ -40,9 +40,20 @@ def get_a_sense(word):
 def nonsense(poem):
   out = ""
   for word in poem.split():
-    if choice(range(3)) == 0:
+    if choice(range(1)) == 0:
       word = get_a_sense(word)
     out += word + " "
   return out
 
-print(nonsense("Take life lightly for lightness is not superficiality but gliding above things not having weights on your heart."))
+def targeted_nonsense(text):
+  out = ""
+  for word in text.split():
+    if word.startswith("_"):
+      word = word.replace("_", "")
+      word = get_a_sense(word)
+      # make it bold
+      word = "\033[1m" + word + "\033[0m"
+    out += word + " "
+  return out
+
+# print(nonsense("Take life lightly for lightness is not superficiality but gliding above things not having weights on your heart."))
